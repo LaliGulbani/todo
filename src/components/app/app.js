@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 
-import { TodoList, AppHeader, SearchPanel, ItemStatusFilter } from '../';
+import { TodoList, AppHeader, SearchPanel, ItemStatusFilter, ItemAddForm } from '../';
 import './app.css';
 
 export default class App extends Component {
+
+    maxId = 100;
 
     state = {
         todoData: [
@@ -19,8 +21,19 @@ export default class App extends Component {
             return {
                 todoData: todoDataDelete
             }
+        });
+    };
+
+    addItem = (text) => {
+        const newItem = {
+            label: text, important: false, id: this.maxId++
+        };
+        this.setState(({todoData}) => {
+            return {
+                todoData: [...todoData, newItem]
+            }
         })
-    }
+    };
 
     render() {
         const {todoData} = this.state;
@@ -33,6 +46,7 @@ export default class App extends Component {
                 </div>
                 <TodoList todos = {todoData}
                     onDeleted={ this.deleteItem }/>
+                <ItemAddForm onItemAdded={ this.addItem }/>
             </div>
     )};
 };
